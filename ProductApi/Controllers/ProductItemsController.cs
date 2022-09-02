@@ -14,10 +14,12 @@ namespace ProductApi.Controllers
     public class ProductItemsController : ControllerBase
     {
         private readonly ProductContext _context;
+        private readonly ILogger<ProductItemsController> _logger;
 
-        public ProductItemsController(ProductContext context)
+        public ProductItemsController(ProductContext context, ILogger<ProductItemsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/ProductItems
@@ -71,6 +73,7 @@ namespace ProductApi.Controllers
             {
                 if (!ProductItemExists(id))
                 {
+                    _logger.LogInformation("Product item {Name} does not exist.", productItem.Name);
                     return NotFound();
                 }
                 else
